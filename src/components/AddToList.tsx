@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import { IState as Props } from "../App";
 
-const AddToList = () => {
+interface IProps {
+  people: Props["people"];
+  setPeople: React.Dispatch<React.SetStateAction<Props["people"]>>;
+}
+
+const AddToList: React.FC<IProps> = ({ people, setPeople }) => {
   const [input, setInput] = useState({
     name: "",
     age: "",
@@ -8,13 +14,36 @@ const AddToList = () => {
     img: "",
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void =>{
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
     setInput({
-        ...input,
-        //if we are chaning name, then this look like this - name: event.target.value
-        [event.target.name]: event.target.value 
-    })
-  }
+      ...input,
+      //if we are chaning name, then this look like this - name: event.target.value
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleClick = (): void => {
+    if (!input.name || !input.age || !input.img) return;
+
+    setPeople([
+      ...people,
+      {
+        name: input.name,
+        age: parseInt(input.age),
+        url: input.img,
+        note: input.note,
+      },
+    ]);
+
+    setInput({
+      name: "",
+      age: "",
+      note: "",
+      img: "",
+    });
+  };
 
   return (
     <div className="AddToList">
@@ -24,7 +53,7 @@ const AddToList = () => {
         className="AddToList-input"
         value={input.name}
         //if we want to check what type has the handleChange in this case we can do onChange={(e) => {}}, and hover over 'e'
-        onChange={handleChange} 
+        onChange={handleChange}
         name="name"
       />
       <input
@@ -32,7 +61,7 @@ const AddToList = () => {
         placeholder="Age"
         className="AddToList-input"
         value={input.age}
-        onChange={handleChange} 
+        onChange={handleChange}
         name="age"
       />
       <input
@@ -40,16 +69,19 @@ const AddToList = () => {
         placeholder="Image url"
         className="AddToList-input"
         value={input.img}
-        onChange={handleChange} 
+        onChange={handleChange}
         name="img"
       />
       <textarea
         placeholder="Notes"
         className="AddToList-input"
         value={input.note}
-        onChange={handleChange} 
+        onChange={handleChange}
         name="note"
       />
+      <button className="AddToList-btn" onClick={handleClick}>
+        Add to list
+      </button>
     </div>
   );
 };
