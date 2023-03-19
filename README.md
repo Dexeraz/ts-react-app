@@ -1,5 +1,6 @@
 A simple Add to list app for practising TS in React.
 
+![image](https://user-images.githubusercontent.com/50703222/226185777-764796c9-8cf7-4991-8bde-7eca54dd778e.png)
 
 
 # Getting Started with Create React App
